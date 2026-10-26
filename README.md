@@ -49,24 +49,7 @@ A sleek, responsive weather application inspired by modern clean design, with re
 ### Option 1: Direct in Browser
 Simply open the `index.html` file in any modern web browser (Google Chrome, Microsoft Edge, Mozilla Firefox, Safari):
 
-```bash
-# In Windows PowerShell:
-Start-Process "C:\Users\RASHI KOIRI\.gemini\antigravity\scratch\skysimple-weather-app\index.html"
 ```
-
-### Option 2: Local HTTP Server (Optional)
-If you prefer running through a local development server:
-
-```bash
-# Using Python:
-cd "C:\Users\RASHI KOIRI\.gemini\antigravity\scratch\skysimple-weather-app"
-python -m http.server 8080
-
-# Then open in browser:
-http://localhost:8080
-```
-
----
 
 ## 🔑 API Keys & Settings
 
