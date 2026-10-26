@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SkySimple - Modern Weather App</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%233b82f6'><path d='M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z'/></svg>">
+</head>
+<body>
+  <div class="app-layout">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-logo">
+          <svg class="logo-icon" viewBox="0 0 36 36" fill="none">
+            <circle cx="15" cy="15" r="9" fill="#FBBF24" />
+            <path d="M11 20C11 17.2386 13.2386 15 16 15C16.892 15 17.7276 15.2327 18.4519 15.6402C19.4678 13.4862 21.6569 12 24.2 12C27.5137 12 30.2 14.6863 30.2 18C30.2 18.2568 30.1839 18.5098 30.1525 18.7578C32.3276 19.3905 33.9 21.3926 33.9 23.7714C33.9 26.6591 31.5591 29 28.6714 29H16.5C13.4624 29 11 26.5376 11 23.5V20Z" fill="#60A5FA" />
+            <path d="M7 23C7 19.6863 9.68629 17 13 17C14.0704 17 15.0731 17.2792 15.9423 17.7682C17.1614 15.1834 19.7883 13.4 22.84 13.4C26.8164 13.4 30.04 16.6236 30.04 20.6C30.04 20.9082 30.0207 21.2118 29.983 21.5094C32.5931 22.2686 34.48 24.6711 34.48 27.5257C34.48 30.991 31.671 33.8 28.2057 33.8H13.6C9.95492 33.8 7 30.8451 7 27.2V23Z" fill="#38BDF8" fill-opacity="0.8" />
+          </svg>
+        </div>
+        <span class="brand-name">SkySimple</span>
+      </div>
+
+      <nav class="nav-menu">
+        <button class="nav-item active" data-tab="today" id="tabToday">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+            <polyline points="9 22 9 12 15 12 15 22"/>
+          </svg>
+          <span>Today</span>
+        </button>
+
+        <button class="nav-item" data-tab="forecast" id="tabForecast">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect width="18" height="18" x="3" y="4" rx="2" ry="2"/>
+            <line x1="16" x2="16" y1="2" y2="6"/>
+            <line x1="8" x2="8" y1="2" y2="6"/>
+            <line x1="3" x2="21" y1="10" y2="10"/>
+          </svg>
+          <span>Forecast</span>
+        </button>
+
+        <button class="nav-item" data-tab="saved" id="tabSaved">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+          </svg>
+          <span>Saved places</span>
+          <span class="badge" id="savedCountBadge">0</span>
+        </button>
+      </nav>
+
+      <!-- Sidebar Footer Tools -->
+      <div class="sidebar-footer">
+        <div class="unit-toggle">
+          <button class="unit-btn active" id="btnCelsius">°C</button>
+          <button class="unit-btn" id="btnFahrenheit">°F</button>
+        </div>
+        <button class="settings-action-btn" id="openSettingsBtn" title="API & Weather Settings">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/>
+            <circle cx="12" cy="12" r="3"/>
+          </svg>
+          <span>API Settings</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Workspace -->
+    <main class="main-content">
+      <!-- Top Bar with Search & Quick Actions -->
+      <header class="top-header">
+        <div class="search-container">
+          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"/>
+            <path d="m21 21-4.3-4.3"/>
+          </svg>
+          <input 
+            type="text" 
+            id="citySearchInput" 
+            placeholder="Search city (e.g. San Francisco, London, Tokyo, Mumbai)..." 
+            autocomplete="off"
+            spellcheck="false"
+          >
+          <button id="clearSearchBtn" class="clear-btn" style="display: none;" title="Clear">✕</button>
+          <div id="searchDropdown" class="search-dropdown"></div>
+        </div>
+
+        <div class="top-actions">
+          <button class="geo-btn" id="geoBtn" title="Use current GPS location">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="3 11 22 2 13 21 11 13 3 11"/>
+            </svg>
+            <span class="geo-text">Current Location</span>
+          </button>
+
+          <button class="save-current-btn" id="bookmarkBtn" title="Save this place">
+            <svg id="bookmarkIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+            </svg>
+          </button>
+
+          <button class="profile-avatar-btn" id="profileBtn" title="Settings & About">
+            <div class="avatar-circle">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+              </svg>
+            </div>
+          </button>
+        </div>
+      </header>
+
+      <!-- Status Notification Banner -->
+      <div id="notificationBanner" class="notification-banner" style="display: none;">
+        <span id="notificationMessage">Weather updated</span>
+        <button id="closeNotification" class="close-banner">✕</button>
+      </div>
+
+      <!-- VIEW 1: TODAY VIEW (Matches SkySimple screenshot) -->
+      <div id="todayView" class="view-panel active">
+        <!-- Weather Main Dashboard Grid -->
+        <div class="weather-grid">
+          <!-- Main Hero Weather Card -->
+          <div class="card hero-card" id="heroCard">
+            <div class="hero-header">
+              <div class="location-group">
+                <h1 class="city-name" id="cityName">San Francisco</h1>
+                <p class="date-str" id="dateStr">Today, Monday</p>
+              </div>
+              <div class="api-pill-badge" id="apiBadge" title="Data provider">Open-Meteo Live</div>
+            </div>
+
+            <div class="hero-body">
+              <div class="weather-illustration" id="heroWeatherIcon">
+                <!-- SVG Weather Art injected by JS -->
+              </div>
+              <div class="temp-group">
+                <div class="current-temp" id="currentTemp">18°C</div>
+                <div class="weather-desc" id="weatherDesc">Partly cloudy</div>
+                <div class="high-low" id="highLow">H: 21°C &nbsp; L: 13°C</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Weather Parameters / Details Card -->
+          <div class="card details-card" id="detailsCard">
+            <div class="detail-row">
+              <div class="detail-label">
+                <svg class="detail-icon icon-humidity" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>
+                </svg>
+                <span>Humidity</span>
+              </div>
+              <div class="detail-value" id="valHumidity">72%</div>
+            </div>
+
+            <div class="detail-divider"></div>
+
+            <div class="detail-row">
+              <div class="detail-label">
+                <svg class="detail-icon icon-wind" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"/>
+                </svg>
+                <span>Wind</span>
+              </div>
+              <div class="detail-value" id="valWind">18 km/h NW</div>
+            </div>
+
+            <div class="detail-divider"></div>
+
+            <div class="detail-row">
+              <div class="detail-label">
+                <svg class="detail-icon icon-feels" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/>
+                </svg>
+                <span>Feels like</span>
+              </div>
+              <div class="detail-value" id="valFeels">17°C</div>
+            </div>
+
+            <div class="detail-divider"></div>
+
+            <div class="detail-row">
+              <div class="detail-label">
+                <svg class="detail-icon icon-visibility" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                  <circle cx="12" cy="12" r="3"/>
+                </svg>
+                <span>Visibility</span>
+              </div>
+              <div class="detail-value" id="valVisibility">10 km</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5-Day Forecast Card -->
+        <div class="card forecast-card">
+          <div class="forecast-header">
+            <h2 class="card-title">5-Day Forecast</h2>
+            <button class="text-link-btn" id="viewFullForecastBtn">View 7-day & hourly breakdown →</button>
+          </div>
+          <div class="forecast-days-container" id="forecastDays">
+            <!-- Forecast cards dynamically generated -->
+          </div>
+        </div>
+
+        <!-- Extra Highlights: Sunrise, Sunset, UV & Pressure -->
+        <div class="extra-highlights-grid">
+          <div class="card highlight-card">
+            <div class="hl-header">
+              <span class="hl-title">Air Pressure</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m16 12-4-4-4 4"/></svg>
+            </div>
+            <div class="hl-value" id="valPressure">1014 hPa</div>
+            <div class="hl-note" id="notePressure">Normal atmospheric pressure</div>
+          </div>
+
+          <div class="card highlight-card">
+            <div class="hl-header">
+              <span class="hl-title">Precipitation</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 16.58A5 5 0 0 0 18 7h-1.26A8 8 0 1 0 4 15.25"/><path d="M8 16v4"/><path d="M12 14v6"/><path d="M16 16v4"/></svg>
+            </div>
+            <div class="hl-value" id="valPrecip">0.0 mm</div>
+            <div class="hl-note" id="notePrecip">No rain expected in the next hours</div>
+          </div>
+
+          <div class="card highlight-card">
+            <div class="hl-header">
+              <span class="hl-title">UV Index</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+            </div>
+            <div class="hl-value" id="valUV">3 (Moderate)</div>
+            <div class="hl-note">Wear sunscreen during midday</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- VIEW 2: FULL FORECAST VIEW (Hourly + 7 Days) -->
+      <div id="forecastView" class="view-panel">
+        <div class="view-header">
+          <div>
+            <h2 class="view-title">Detailed Weather Forecast</h2>
+            <p class="view-subtitle" id="forecastSubtitle">Hourly trends & full 7-day outlook</p>
+          </div>
+          <button class="secondary-btn" id="backToTodayBtn">← Back to Today</button>
+        </div>
+
+        <div class="card hourly-card">
+          <h3 class="card-title">Hourly Temperature & Weather (Next 24h)</h3>
+          <div class="hourly-slider" id="hourlySlider">
+            <!-- Hourly items rendered dynamically -->
+          </div>
+        </div>
+
+        <div class="card full-week-card">
+          <h3 class="card-title">7-Day Extended Weather Outlook</h3>
+          <div class="week-list" id="weekList">
+            <!-- 7 days full list rendered dynamically -->
+          </div>
+        </div>
+      </div>
+
+      <!-- VIEW 3: SAVED PLACES VIEW -->
+      <div id="savedView" class="view-panel">
+        <div class="view-header">
+          <div>
+            <h2 class="view-title">Saved Places</h2>
+            <p class="view-subtitle">Quick access to your favorite worldwide cities</p>
+          </div>
+          <button class="secondary-btn" id="saveCurrentLocationAction">⭐ Save Current Place</button>
+        </div>
+
+        <div class="saved-places-grid" id="savedPlacesGrid">
+          <!-- Saved place cards rendered dynamically -->
+        </div>
+
+        <div id="noSavedPlacesPrompt" class="empty-state" style="display: none;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+          </svg>
+          <h3>No saved cities yet</h3>
+          <p>Search for any city and click the star icon to save it here for instant live weather updates.</p>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Mobile Bottom Navigation Bar -->
+  <nav class="mobile-nav">
+    <button class="mob-item active" data-tab="today">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+      <span>Today</span>
+    </button>
+    <button class="mob-item" data-tab="forecast">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/></svg>
+      <span>Forecast</span>
+    </button>
+    <button class="mob-item" data-tab="saved">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      <span>Saved</span>
+    </button>
+    <button class="mob-item" id="mobSettingsBtn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      <span>Settings</span>
+    </button>
+  </nav>
+
+  <!-- Settings / API Keys Modal -->
+  <div class="modal-backdrop" id="settingsModal" style="display: none;">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title">API Keys & Weather Provider</h3>
+        <button class="modal-close-btn" id="closeSettingsBtn">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="provider-option-group">
+          <label class="provider-radio-label">
+            <input type="radio" name="apiProvider" value="open-meteo" id="providerOpenMeteo" checked>
+            <div class="provider-info">
+              <div class="provider-title">
+                <strong>Open-Meteo API</strong>
+                <span class="badge-success">Active & Ready (No Key Required)</span>
+              </div>
+              <p class="provider-desc">
+                High-precision global weather data from national meteorological services (NOAA, DWD, ECMWF). Works immediately worldwide with zero configuration or keys!
+              </p>
+            </div>
+          </label>
+
+          <label class="provider-radio-label">
+            <input type="radio" name="apiProvider" value="openweathermap" id="providerOpenWeatherMap">
+            <div class="provider-info">
+              <div class="provider-title">
+                <strong>OpenWeatherMap API</strong>
+                <span class="badge-custom">Custom API Key</span>
+              </div>
+              <p class="provider-desc">
+                Use your personal OpenWeatherMap 2.5/3.0 API key. If you have an active key from openweathermap.org, paste it below.
+              </p>
+            </div>
+          </label>
+        </div>
+
+        <div class="api-key-input-box" id="owmKeyBox" style="display: none;">
+          <label for="owmApiKeyInput">OpenWeatherMap API Key:</label>
+          <div class="key-input-wrapper">
+            <input type="password" id="owmApiKeyInput" placeholder="Paste your 32-character API key here...">
+            <button type="button" class="key-toggle-btn" id="toggleKeyVisibility">Show</button>
+          </div>
+          <span class="input-hint">Free keys available at <a href="https://home.openweathermap.org/users/sign_up" target="_blank" rel="noopener">openweathermap.org</a></span>
+        </div>
+
+        <div class="settings-divider"></div>
+
+        <div class="setting-item">
+          <div class="setting-text">
+            <h4>Default Units</h4>
+            <p>Choose Celsius (°C) or Fahrenheit (°F)</p>
+          </div>
+          <div class="unit-toggle small">
+            <button class="unit-btn active" id="modalUnitC">°C</button>
+            <button class="unit-btn" id="modalUnitF">°F</button>
+          </div>
+        </div>
+
+        <div class="setting-item">
+          <div class="setting-text">
+            <h4>Sample Cities Quick Load</h4>
+            <p>Quickly switch between iconic worldwide cities</p>
+          </div>
+          <div class="quick-cities">
+            <button class="quick-city-chip" data-city="San Francisco">San Francisco</button>
+            <button class="quick-city-chip" data-city="New York">New York</button>
+            <button class="quick-city-chip" data-city="London">London</button>
+            <button class="quick-city-chip" data-city="Tokyo">Tokyo</button>
+            <button class="quick-city-chip" data-city="Paris">Paris</button>
+            <button class="quick-city-chip" data-city="Sydney">Sydney</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="secondary-btn" id="cancelSettingsBtn">Close</button>
+        <button class="primary-btn" id="saveSettingsBtn">Save & Apply</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
